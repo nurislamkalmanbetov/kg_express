@@ -3,6 +3,8 @@ from decimal import Decimal
 from django.conf import settings
 from backend.apps.product.models import Product
 
+from backend.apps import product
+
 
 class Cart():
 
@@ -61,4 +63,12 @@ class Cart():
     def save(self):
         self.session.modified = True
 
+    def minus(self):
+        product_id = str(product.id)
+
+        if product_id in self.cart:
+            self.cart[product_id]['quantity'] -= 1
+            if self.cart[product_id]['quantity'] <= 0:
+                del self.cart[product_id]
+        self.save()
 

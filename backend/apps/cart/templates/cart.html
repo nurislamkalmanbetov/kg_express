@@ -1,5 +1,7 @@
 {% extends 'base_tabler.html' %}
 
+{% load static %}
+
 {% block content %}
 
 <div class="col-12">
@@ -38,7 +40,11 @@
                         {{ item.price }}
                     </td>
                 <td>
+                    <button type="button" class="button-minus" data-id="{{ item.product.id }}">
+                        <i class="ti ti-minus"></i></button>
                     {{item.quantity}}
+                    <button type="button" class="button-plus" data-id="{{ item.product.id }}">
+                        <i class="ti ti-plus"></i></button>
                 </td>
                 <td>{{item.total_price}}сом</td>
                 <td>
@@ -73,7 +79,7 @@
                     </a>
                   </div>
                 <div class="col-6 col-sm-4 col-md-2 col-xl mb-3">
-                    <a href="#" class="btn btn-primary disabled w-100">
+                    <a href="#" class="btn btn-primary dactive w-100" data-bs-toggle="modal" data-bs-target="#modal-report"">
                       Оформить заказ
                     </a>
                 </div>
@@ -82,4 +88,43 @@
             </div>
           </div>
 
+    <div class="modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Оформление заказа</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <form action="{% url 'order_create' %}" method="post">
+              <div class="modal-body">
+                      {% csrf_token %}
+                      {{ form }}
+              </div>
+
+              <div class="modal-footer">
+                <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                  Закрыть
+                </a>
+                <button type="submit" class="btn btn-primary">
+                      Подтвердить оформление
+                </button>
+              </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
 {% endblock %}
+
+
+{% block javascript %}
+    <script  src="{% static 'dist/js/cart.js' %}">
+
+    </script>
+{% endblock %}
+
+
+
+
+
